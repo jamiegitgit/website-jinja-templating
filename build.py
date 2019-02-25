@@ -11,6 +11,7 @@ list_of_pages = []
 
 #functions--------------
 def main():
+    jinja_test()
     create_page_list()
     create_menu(list_of_pages)
     create_full_base()
@@ -23,6 +24,8 @@ def main():
         base= assign_base(title)
         assemble_page(title, base, filename, output)           
         page_title (title, output)
+        
+     
 
 #trying to build the list automatically
 def create_page_list():
@@ -40,6 +43,7 @@ def create_page_list():
     print(list_of_pages)    
 
 #generate a menu from the list_of_pages 
+#later step
 def create_menu(pages):
     header_footer = open("templates/headerfooter.html").read()
     menu = ""
@@ -78,16 +82,28 @@ def assign_base(page_name):
     else:
         base = open("templates/fullbase.html").read()
     return base
+    
+#this is where i am
+#     
+def jinja_test():
+    from jinja2 import Template
+    index_html = open("content/index.html").read()
+    template_html = open("templates/base.html").read()
+    template = Template(template_html)
+    template.render(
+        title="Homepage",
+        content=index_html,
+    )   
             
 #replace placeholder in each page with the page's content
 def assemble_page(page_name, page_template, filename, output):
     # Open the content of each HTML page
     content = open(filename).read()
-    # place content in template
+    # place content in template #this will be replaced by jinja
     finished_page = page_template.replace("{{content}}", content)
     open(output, "w+").write(finished_page)
 
-#insert page title and copywrite year
+#insert page title and copywrite year #can fold these into jinja
 def page_title (page_name, output):
     page = open(output).read()
     if page_name == "index":
