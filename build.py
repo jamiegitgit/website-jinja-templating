@@ -1,38 +1,17 @@
 
-
+#import statements -----------
 import datetime
-
+import glob
+import os
 
 #lists---------------
-list_of_pages = [
-    {
-    "filename": "content/index.html",
-    "output": "docs/index.html",
-    "title": "index",
-    },
-    {
-    "filename": "content/about.html",
-    "output": "docs/about.html",
-    "title": "about",
-    },
-    {
-    "filename": "content/gallery.html",
-    "output": "docs/gallery.html",
-    "title": "gallery",
-    },
-    {
-    "filename": "content/contribute.html",
-    "output": "docs/contribute.html",
-    "title": "contribute",
-    },
-]
-
-
+list_of_pages = []
 
 
 
 #functions--------------
 def main():
+    create_page_list()
     create_menu(list_of_pages)
     create_full_base()
     #assemble each page 
@@ -44,6 +23,21 @@ def main():
         base= assign_base(title)
         assemble_page(title, base, filename, output)           
         page_title (title, output)
+
+#trying to build the list automatically
+def create_page_list():
+    all_html_files = glob.glob("content/*.html")
+    for page in all_html_files:
+        file_path = page
+        file_name = os.path.basename(file_path)
+        name_only, extension = os.path.splitext(file_name)
+        file_dict = {
+            "filename": page,
+            "output": "docs/"+ name_only + ".html",
+            "title": name_only,
+        }
+        list_of_pages.append(file_dict)
+    print(list_of_pages)    
 
 #generate a menu from the list_of_pages 
 def create_menu(pages):
@@ -111,3 +105,4 @@ def page_title (page_name, output):
 #run--------------    
 if __name__ == "__main__":
     main()
+    
