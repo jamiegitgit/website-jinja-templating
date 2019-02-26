@@ -9,7 +9,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title  -->
-    <title>Oakland Mosaic Trash Can Project | </title>
+    <title>Oakland Mosaic Trash Can Project | {{title| title}}</title>
 
    <link href="https://fonts.googleapis.com/css?family=Staatliches|Rajdhani" rel="stylesheet">
   
@@ -48,14 +48,10 @@
                                 <!-- Menu Area Start  -->
                                 <ul class="navbar-nav ml-auto">
                                 <li class="nav-item">
-
-<li class="nav-item">
-	<a class="nav-link" href="index.html">Home</a>
-</li><li class="nav-item">
-	<a class="nav-link" href="about.html">About</a>
-</li><li class="nav-item">
-	<a class="nav-link" href="gallery.html">Gallery</a>
-</li>
+                                   {% for page in pages %}
+                                        <li class="nav-item">
+	                                        <a class="nav-link" href="{{page.doc_name }}"> {{page.title| title}} </a>
+                                    {% endfor%}
                                 </ul>
                                 <!-- Search Form -->
                                 <div class="header-search-form ml-auto">
@@ -97,6 +93,7 @@
         </div>
     </footer>
     <!-- Footer Area End -->
+
 
 
 
