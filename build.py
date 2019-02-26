@@ -3,6 +3,7 @@
 import datetime
 import glob
 import os
+from jinja2 import Template
 
 #lists---------------
 list_of_pages = []
@@ -11,7 +12,7 @@ list_of_pages = []
 
 #functions--------------
 def main():
-    jinja_test()
+  #  jinja_test()
     create_page_list()
     create_menu(list_of_pages)
     create_full_base()
@@ -102,6 +103,10 @@ def assemble_page(page_name, page_template, filename, output):
     # place content in template #this will be replaced by jinja
     finished_page = page_template.replace("{{content}}", content)
     open(output, "w+").write(finished_page)
+    template = Template(page_template)
+    template.render(
+        content=content,
+    )   
 
 #insert page title and copywrite year #can fold these into jinja
 def page_title (page_name, output):
