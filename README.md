@@ -1,3 +1,4 @@
-# oakland-mosaic-trash-cans-site
+# Oakland Mosaic Trash Cans Site
 
  build.py to assemble website pages
+ 
