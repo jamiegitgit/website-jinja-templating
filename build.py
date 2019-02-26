@@ -12,7 +12,7 @@ list_of_pages = []
 
 #functions--------------
 def main():
-  #  jinja_test()
+    jinja_test()
     create_page_list()
     create_menu(list_of_pages)
     create_full_base()
@@ -59,6 +59,8 @@ def create_menu(pages):
     #place menu in headerfooter template # can jinja this too 
 # cAN I COMBINE THESE TWO IN the if statement so i only render once? but need if statement for complete menu. maybe for loop and then an if statement to define what goes in Template(!!!)
     #make it a function that gets passed a variable!!!
+    #what if i do variables (template, placeholder, content) and then do a seperate render for each insertion
+    # is there a way to just do one render? i think i need a diff render for each file. what if i try to replace a placeholder that doesn't exist?
     template = Template(header_footer)
     menu_inserted = template.render(
         menu_items= menu,
@@ -105,10 +107,12 @@ def jinja_test():
     index_html = open("content/index.html").read()
     template_html = open("templates/base.html").read()
     template = Template(template_html)
-    template.render(
+    test= template.render(
         title="Homepage",
         content=index_html,
-    )   
+        basic="Party",
+    )
+    open("docs/test.html", "w+").write(test)   
             
 #replace placeholder in each page with the page's content
 def assemble_page(page_name, page_template, filename, output):
