@@ -19,12 +19,13 @@ list_of_pages = []
 #functions--------------
 def main():
     create_page_list()
-    create_menu(list_of_pages)
+    #create_menu(list_of_pages)
+    create_interior()
     create_full_base()
     #assemble each page 
     for page in list_of_pages:
         title= page["title"]
-        filename= page["filename"]
+        filename= page["input"]
         output= page["output"]
         #add in filename and output so can use them
         base= assign_base(title)
@@ -47,20 +48,49 @@ def main():
 def create_page_list():
     all_html_files = glob.glob("content/*.html")
     for page in all_html_files:
-        file_path = page
-        file_name = os.path.basename(file_path)
+        print(page) #delete later
+        #file_path = page
+        file_name = os.path.basename(page)
         name_only, extension = os.path.splitext(file_name)
         file_dict = {
-            "filename": page,
-            "output": "docs/"+ name_only + ".html",
-            "doc_name":name_only + ".html",
             "title": name_only,
+            "doc_name":name_only + ".html",
+            "input": page,
+            "stage": "interior/"+ name_only+".html",
+            "output": "docs/"+ name_only + ".html",
         }
         if page == "content/index.html":
             file_dict["title"]="Home"
         list_of_pages.append(file_dict)
     for html_page in list_of_pages: #just for my use. will delete
         print(html_page)    
+
+#step 2
+#put content in header template/ copy index over
+
+#for each page in contents
+#if title= home
+    #copy to interior
+#else
+    #render content into headerfooter template
+    #write file to interior
+def create_interior():
+    for page in list_of_pages:
+        print(page["title"], page["input"], page["stage"]) #delete
+        # copy index.html from contents to interior
+        page_content=open(page["input"]).read()
+        if page["title"] == "Home":
+            interior_file=page_content
+        else:
+            header_footer=open("templates/headerfooter.html").read()
+            template = Template(header_footer)
+            interior_file = template.render(
+                content=page_content,
+            )
+        open(page["stage"], "w+").write(interior_file)
+
+
+
 
 #generate a menu from the list_of_pages 
 def create_menu(pages):
