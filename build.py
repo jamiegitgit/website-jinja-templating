@@ -103,33 +103,34 @@ def assign_base(page_name):
 #replace placeholder in each page with the page's content, title, year
 def assemble_page(page_name, page_template, filename, output):
     # Define content, title, and year
+    content = open(filename).read()
     if page_name == "index":
         title = "Home"
-        index = open(filename).read()
-        page_content = None
+        #index = open(filename).read()
+        #page_content = None
     else:
         title= page_name.capitalize()
-        page_content = open(filename).read()
-        index = None
+        #page_content = open(filename).read()
+        #index = None
     now = datetime.datetime.now()
     year=str(now.year)
     print(page_name, filename, output)
     # put those into template
     #write a dictionary for the rendering to go through?
-    templating(page_template, 'content', page_content, index, title, year, output)
+    
+    #templating(page_template, 'content', page_content, index, title, year, output)
     
 
 #perform templating
-def templating (open_page, placeholder, page_content, page_index, page_title, page_year, output_page): #put these in a list?
-    template = Template(open_page)
+#def templating (open_page, placeholder, page_content, page_index, page_title, page_year, output_page): #put these in a list?
+    template = Template(page_template)
     finished_page=template.render(
-        placeholder = page_content, #this has to say content on the left side. not "content"
+        content = content, #this has to say content on the left side. not "content"
         #this is really inelegant
-        index = page_index,
-        title = page_title,
-        year = page_year,
+        title = title,
+        year = year,
     )  
-    open(output_page, "w+").write(finished_page)    
+    open(output, "w+").write(finished_page)    
 
         
 
