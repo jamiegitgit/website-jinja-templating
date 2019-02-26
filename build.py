@@ -18,7 +18,7 @@ list_of_pages = []
 #functions--------------
 def main():
     create_page_list()
-   # create_menu(list_of_pages)
+    create_menu(list_of_pages)
     create_full_base()
     #assemble each page 
     for page in list_of_pages:
@@ -58,23 +58,20 @@ def create_menu(pages):
         caps_title=title.capitalize()
         if title == "index":
             caps_title = "Home"
+            template_file= open("content/index.html").read()
+            output_file = "content/index.html"
+        else:
+            template_file = header_footer
+            output_file = "templates/headerfooter.html"
         menu_item = '<li class="nav-item">\n\t<a class="nav-link" href="'+ title + '.html">' +caps_title+'</a>\n</li>'
         menu = menu + menu_item
-    #place menu in headerfooter template
-    #make it a function that gets passed a variable!!!
-    #what if i do variables (template, placeholder, content) and then do a seperate render for each insertion
-    template = Template(header_footer)
+    #place menu in  template
+    template = Template(template_file)
     menu_inserted = template.render(
         menu_items= menu,
     )  
-    open("templates/headerfooter.html", "w+").write(menu_inserted)
-    #place menu in home content
-    home_content = open("content/index.html").read()
-    template = Template(home_content)
-    menu_inserted = template.render(
-        menu_items = menu,
-    )  
-    open("content/index.html", "w+").write(menu_inserted)
+    open(output_file, "w+").write(menu_inserted)
+    
 
 # Create full base with header and footer    
 def create_full_base():
@@ -83,7 +80,7 @@ def create_full_base():
     # Read in the header and footer
     header_footer = open("templates/headerfooter.html").read()
     # Add header and footer to basic base
-    template = Template(base_template) ## use templating function?
+    template = Template(base_template)
     full_base=template.render(
         header_footer=header_footer,
     )  
@@ -103,31 +100,23 @@ def assign_base(page_name):
 #replace placeholder in each page with the page's content, title, year
 def assemble_page(page_name, page_template, filename, output):
     # Define content, title, and year
-    content = open(filename).read()
     if page_name == "index":
         title = "Home"
-        #index = open(filename).read()
-        #page_content = None
+        index = open(filename).read()
+        content = None
     else:
         title= page_name.capitalize()
-        #page_content = open(filename).read()
-        #index = None
+        content = open(filename).read()
+        index = None
     now = datetime.datetime.now()
     year=str(now.year)
     print(page_name, filename, output)
-    # put those into template
-    #write a dictionary for the rendering to go through?
-    
-    #templating(page_template, 'content', page_content, index, title, year, output)
-    
-
-#perform templating
-#def templating (open_page, placeholder, page_content, page_index, page_title, page_year, output_page): #put these in a list?
+    #template to put it all together
     template = Template(page_template)
     finished_page=template.render(
-        content = content, #this has to say content on the left side. not "content"
-        #this is really inelegant
+        content = content,
         title = title,
+        index= index,
         year = year,
     )  
     open(output, "w+").write(finished_page)    
