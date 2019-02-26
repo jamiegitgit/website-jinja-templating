@@ -30,8 +30,18 @@ def main():
         base= assign_base(title)
         assemble_page(title, base, filename, output)           
 
-        
-     
+# begin with base, headerfooter, content files
+#create fullbase
+#put menu in fullbase and content/index
+#put title, content, and date in base and fullbase
+
+#what if i begin with fullbase and use jinja to comment out header and footer?
+    #can't comment out header and footer
+#then i can assemble title, content, date in base
+#then insert menu
+#can i do all rendering at once? adding in {{begin_comment}} and {{end_comment}}
+#will still have to render menu within the index content page       
+#either two render codeblocks or looped rendering where it repeats unnecessarily     
 
 #build the list of pages automatically
 def create_page_list():
