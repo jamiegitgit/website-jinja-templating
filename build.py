@@ -56,12 +56,22 @@ def create_menu(pages):
             caps_title = "Home"
         menu_item = '<li class="nav-item">\n\t<a class="nav-link" href="'+ title + '.html">' +caps_title+'</a>\n</li>'
         menu = menu + menu_item
-    #place menu in headerfooter template # can jinja this too
-    menu_inserted = header_footer.replace("{{menu items}}", menu)
+    #place menu in headerfooter template # can jinja this too 
+# cAN I COMBINE THESE TWO IN the if statement so i only render once? but need if statement for complete menu. maybe for loop and then an if statement to define what goes in Template(!!!)
+    #make it a function that gets passed a variable!!!
+    template = Template(header_footer)
+    menu_inserted = template.render(
+        menu_items= menu,
+    )  
+    #menu_inserted = header_footer.replace("{{menu items}}", menu)
     open("templates/headerfooter.html", "w+").write(menu_inserted)
     #place menu in home content
     home_content = open("content/index.html").read()
-    menu_inserted = home_content.replace("{{menu items}}", menu)
+    template = Template(home_content)
+    menu_inserted = template.render(
+        menu_items = menu,
+    )  
+    #menu_inserted = home_content.replace("{{menu items}}", menu)
     open("content/index.html", "w+").write(menu_inserted)
 
 # Create full base with header and footer    
@@ -71,7 +81,11 @@ def create_full_base():
     # Read in the header and footer
     header_footer = open("templates/headerfooter.html").read()
     # Add header and footer to basic base
-    full_base = base_template.replace("{{content}}", header_footer)
+    #full_base = base_template.replace("{{content}}", header_footer) #jinja it!
+    template = Template(base_template)
+    full_base=template.render(
+        content=header_footer,
+    )  
     open("templates/fullbase.html", "w+").write(full_base)     
        
 # Chooses correct base for each page
