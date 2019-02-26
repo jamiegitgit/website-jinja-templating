@@ -24,7 +24,7 @@ def main():
         #add in filename and output so can use them
         base= assign_base(title)
         assemble_page(title, base, filename, output)           
-        page_title (title, output)
+        #page_title (title, output)
         
      
 
@@ -56,12 +56,12 @@ def create_menu(pages):
             caps_title = "Home"
         menu_item = '<li class="nav-item">\n\t<a class="nav-link" href="'+ title + '.html">' +caps_title+'</a>\n</li>'
         menu = menu + menu_item
-    #place menu in headerfooter template
-    menu_inserted = header_footer.replace("{{menu item}}", menu)
+    #place menu in headerfooter template # can jinja this too
+    menu_inserted = header_footer.replace("{{menu items}}", menu)
     open("templates/headerfooter.html", "w+").write(menu_inserted)
     #place menu in home content
     home_content = open("content/index.html").read()
-    menu_inserted = home_content.replace("{{menu item}}", menu)
+    menu_inserted = home_content.replace("{{menu items}}", menu)
     open("content/index.html", "w+").write(menu_inserted)
 
 # Create full base with header and footer    
@@ -101,14 +101,24 @@ def assemble_page(page_name, page_template, filename, output):
     # Open the content of each HTML page
     content = open(filename).read()
     # place content in template #this will be replaced by jinja
-    finished_page = page_template.replace("{{content}}", content)
-    open(output, "w+").write(finished_page)
+    #finished_page = page_template.replace("{{content}}", content)
+   # open(output, "w+").write(finished_page)
+    if page_name == "index":
+        title = "Home"
+    else:
+        title= page_name.capitalize()
+    now = datetime.datetime.now()
+    year=str(now.year)
     template = Template(page_template)
-    template.render(
+    finished_page=template.render(
         content=content,
-    )   
-
-#insert page title and copywrite year #can fold these into jinja
+        title=title,
+        year=year,
+    )   #i need to write the output
+    open(output, "w+").write(finished_page)
+    #open('output.html', 'w+').write(html_result)
+    
+#insert page title and copywrite year #this is all now in assemble_page using jinja
 def page_title (page_name, output):
     page = open(output).read()
     if page_name == "index":
