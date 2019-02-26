@@ -65,12 +65,12 @@ def create_menu(pages):
             output_file = "templates/headerfooter.html"
         menu_item = '<li class="nav-item">\n\t<a class="nav-link" href="'+ title + '.html">' +caps_title+'</a>\n</li>'
         menu = menu + menu_item
-    #place menu in  template
-    template = Template(template_file)
-    menu_inserted = template.render(
-        menu_items= menu,
-    )  
-    open(output_file, "w+").write(menu_inserted)
+        #place menu in  template
+        template = Template(template_file) 
+        menu_inserted = template.render( #this actually renders templates/headerfooter.html twice. is that good? bad?
+            menu_items= menu,
+        )  
+        open(output_file, "w+").write(menu_inserted)
     
 
 # Create full base with header and footer    
