@@ -18,18 +18,18 @@ list_of_pages = []
 
 #functions--------------
 def main():
-    create_page_list()
+    create_list_of_pages()
     #create_menu(list_of_pages)
-    create_interior()
-    create_full_base()
+    create_interior_files()
+    #create_full_base()
     #assemble each page 
     for page in list_of_pages:
         title= page["title"]
-        filename= page["input"]
+        interior= page["stage"]
         output= page["output"]
         #add in filename and output so can use them
-        base= assign_base(title)
-        assemble_page(title, base, filename, output)           
+        #base= assign_base(title)
+        assemble_page(title, interior, output)           
 
 # begin with base, headerfooter, content files
 #create fullbase
@@ -45,7 +45,7 @@ def main():
 #either two render codeblocks or looped rendering where it repeats unnecessarily     
 
 #build the list of pages automatically
-def create_page_list():
+def create_list_of_pages():
     all_html_files = glob.glob("content/*.html")
     for page in all_html_files:
         print(page) #delete later
@@ -66,15 +66,8 @@ def create_page_list():
         print(html_page)    
 
 #step 2
-#put content in header template/ copy index over
-
-#for each page in contents
-#if title= home
-    #copy to interior
-#else
-    #render content into headerfooter template
-    #write file to interior
-def create_interior():
+#put content in header template, but just copy index over
+def create_interior_files():
     for page in list_of_pages:
         print(page["title"], page["input"], page["stage"]) #delete
         # copy index.html from contents to interior
@@ -138,26 +131,20 @@ def assign_base(page_name):
        
             
 #replace placeholder in each page with the page's content, title, year
-def assemble_page(page_name, page_template, filename, output):
-    # Define content, title, and year
-    if page_name == "Home":
-       # title = "Home"
-        index = open(filename).read()
-        content = None
-    else:
-        #title= page_name.capitalize()
-        content = open(filename).read()
-        index = None
+def assemble_page(page_name, interior_file, output):
+    # Define inside, title, and year (add menu)
+    inside = open(interior_file).read()
+    base= open("templates/base.html").read()
     now = datetime.datetime.now()
     year=str(now.year)
-    print(page_name, filename, output)
+    print(page_name, interior_file, output)
     #template to put it all together
-    template = Template(page_template)
+    template = Template(base)
     finished_page=template.render(
-        content = content,
+        content = inside,
         title = page_name,
-        index= index,
         year = year,
+        #menu,
     )  
     open(output, "w+").write(finished_page)    
 
