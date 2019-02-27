@@ -1,8 +1,6 @@
 # todo:
-#-get rid of search bar
-#- get rid of made with heart
 #- make photos smaller
-#- change input and output files to be diff
+#-change jinja file to make a class for when I'm on that page. then css it
 
 
 #import statements -----------
@@ -15,17 +13,13 @@ from jinja2 import Template
 list_of_pages = []
 
 
-
 #functions--------------
 def main():
     create_list_of_pages()
     create_interior_files()
     #assemble each page 
     for page in list_of_pages:
-        title= page["title"]
-        interior= page["stage"]
-        output= page["output"]
-        assemble_page(title, interior, output)               
+        assemble_page(page["title"], page["stage"], page["output"])               
 
 #build the list of pages automatically
 def create_list_of_pages():
@@ -85,9 +79,8 @@ def assemble_page(page_name, interior_file, output):
         pages=list_of_pages, 
         year= year,
     )
+    # put interior files in base
     base= open("templates/base.html").read()
-    print(page_name, interior_file, output)
-    #template to put interior files in base
     template = Template(base)
     finished_page=template.render(
         content = templated_interior,
