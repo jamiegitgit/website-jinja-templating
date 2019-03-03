@@ -17,11 +17,7 @@
                             <div class="collapse navbar-collapse" id="studioMenu">
                                 <!-- Menu Area Start  -->
                                 <ul class="navbar-nav ml-auto">
-                                   {% for page in pages %}
-    <li class="nav-item">
-        <a class="nav-link" href="{{page.doc_name }}"> {{page.title| title}} </a>
-{% endfor%}
-
+                                   {{menu}}
                                 </ul>
                                 <!-- Menu Area End  -->
                             </div>
